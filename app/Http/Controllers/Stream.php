@@ -10,7 +10,7 @@ class Stream extends BaseController
 
     function sse()
     {
-        \DB::enableQueryLog();
+        // \DB::enableQueryLog();
         session_write_close();
 
         header("Content-Type: text/event-stream");
