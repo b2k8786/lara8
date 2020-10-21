@@ -23,12 +23,15 @@ class Stream extends BaseController
             ->get();
 
         while (true) {
+            set_time_limit(5);
             if (empty($lastUpdatedAt) && !$users->count())
                 goto start;
 
             if ($users->count()) {
                 $lastUpdatedAt = $users[0]->updated_at;
                 echo "data: " . $users . "\n\n";
+            } else {
+                echo ": heartbeat\n\n";
             }
 
             // $lastQueries = \DB::getQueryLog();
@@ -39,13 +42,16 @@ class Stream extends BaseController
             ob_flush();
             flush();
             ob_clean();
-            sleep(1 / 2);
+            sleep(1);
 
             $users = \App\Models\Users::whereRaw("updated_at > '$lastUpdatedAt'")
                 ->orderBy('updated_at', 'DESC')
                 ->get();
             if ($users->count())
                 $lastUpdatedAt = $users[0]->updated_at;
+
+            if (connection_aborted())
+                exit();
         }
     }
 

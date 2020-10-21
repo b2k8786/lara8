@@ -9,14 +9,21 @@ $_SESSION['uID'] = strtotime('now');
     <meta charset="utf-8" />
     <title>SSE</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 
 <body>
-    <button onclick="stopSync();">Stop sync</button>
+    <div id="actions">
+        <button onclick="stopSync();">Stop sync</button>
+    </div>
+    <div id="data">
+    </div>
     <script>
         var source = new EventSource('http://bitoku.com/live');
+        
         source.addEventListener('open', function(e) {
-            // Connection was opened.
+            jQuery('#data').html("");
+            console.log(e);
         }, false);
 
         source.addEventListener('message', function(e) {
@@ -24,24 +31,19 @@ $_SESSION['uID'] = strtotime('now');
             try {
                 data = JSON.parse(e.data);
                 console.log(data);
-                var br = document.createElement("br");
+
                 data.forEach(row => {
-                    document.body.prepend(br);
-                    document.querySelector('body').prepend(row.name + " " + row.email);
-                    document.body.prepend(br);
+                    jQuery('#data').prepend("<br>" + row.name + " " + row.email);
                 });
 
             } catch (e) {
-                document.querySelector('body').html(e);
                 console.log('Error json decodeing ');
+                console.log(e);
             }
-            // jQuery('body').html(e.data);
         }, false);
 
         source.addEventListener('error', function(e) {
-            if (e.readyState == EventSource.CLOSED) {
-                // Connection was closed.
-            }
+            console.log(e);
         }, false);
 
         window.onbeforeunload = (e) => {
