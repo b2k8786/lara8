@@ -19,8 +19,8 @@ $_SESSION['uID'] = strtotime('now');
     <div id="data">
     </div>
     <script>
-        var source = new EventSource('http://bitoku.com/live');
-        
+        var source = new EventSource('<?= url('/') ?>/live');
+
         source.addEventListener('open', function(e) {
             jQuery('#data').html("");
             console.log(e);
