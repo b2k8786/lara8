@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Products;
+use App\Http\Controllers\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/addProduct', [Products::class,'add']);
+Route::post('/addUser', [Users::class,'add']);
