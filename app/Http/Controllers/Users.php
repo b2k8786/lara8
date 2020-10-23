@@ -13,15 +13,22 @@ class Users extends BaseController
     {
         $user = new \App\Models\Users();
 
-        $user->name              = $request->name;
-        $user->password          = md5($request->password);
-        $user->email             = $request->email;
-        $user->email_verified_at = date('Y-m-d H:i:s');
+        $user->username    = $request->username;
+        $user->password    = $request->password;   //md5($request->password);
+        $user->email       = $request->email;
+        $user->contact     = $request->contact;
+        $user->verified_at = date('Y-m-d H:i:s');
 
         if ($user->save())
-            echo 'SAVED';
+            return response()->json([
+                'code' => 200,
+                'state' => 'saved',
+            ]);
         else {
-            echo 'UNABLE TO SAVE';
+            return response()->json([
+                'code' => 300,
+                'state' => 'error',
+            ]);
         }
     }
 }

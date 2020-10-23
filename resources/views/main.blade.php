@@ -33,7 +33,7 @@ $_SESSION['uID'] = strtotime('now');
                 console.log(data);
 
                 data.forEach(row => {
-                    jQuery('#data').prepend("<br>" + row.name + " " + row.email);
+                    jQuery('#data').prepend("<br>" + row.username + " " + row.email);
                 });
 
             } catch (e) {
