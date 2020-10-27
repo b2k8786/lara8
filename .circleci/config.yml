@@ -8,8 +8,6 @@ jobs:
     docker:
       # Specify the version you desire here
       - image: circleci/php:7.4-node-browsers
-      environment:
-        TEST_DATABASE_URL: postgresql://root@localhost/circle_test
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
