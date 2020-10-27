@@ -4,23 +4,22 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class Users extends TestCase
+class UsersTest extends TestCase
 {
     use WithFaker;
 
-    // use RefreshDatabase;
-
-    /**@test*/
     // public function test_url_check()
     // {
     //     $response = $this->post('/addUser');
     //     $response->assertStatus(200);
     // }
 
-    /**@test*/
-    public function test_add_new_user()
+    /**
+     * @test
+     */
+    public function add_new_user()
     {
 
         // $this->withExceptionHandling();
@@ -32,10 +31,8 @@ class Users extends TestCase
             'contact' => $this->faker->e164PhoneNumber
         ];
 
-        $output = $this->post("/adduser", $attributes);
-        // var_dump($output);
-        // die;
-        $this->assertDatabaseHas('users',$attributes);
-        // $this->assertEquals($output, "SAVED");
+        $this->post("/adduser", $attributes);
+
+        $this->assertDatabaseHas('users', $attributes);
     }
 }
