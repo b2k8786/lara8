@@ -7,8 +7,9 @@ use voku\helper\HtmlDomParser;
 
 class Main extends BaseController
 {
-    function test()
+    function test($query)
     {
+        echo $query;
         $params = [
             'action' => 'parse',
             'format' => 'json',
