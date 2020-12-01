@@ -9,11 +9,11 @@ class Main extends BaseController
 {
     function test($query)
     {
-        echo $query;
+        echo $query . PHP_EOL;
         $params = [
             'action' => 'parse',
             'format' => 'json',
-            'page' => 'Mahatma Gandhi',
+            'page' => $query, //'Mahatma Gandhi',
             'prop' => 'text',
             // 'section' => 'info'
         ];
@@ -34,6 +34,7 @@ class Main extends BaseController
         $sideSummary =  $text['parse']['text']['*'];
 
         // print_r($text);
+
         $wikiBaseUrl = "https://en.wikipedia.org/";
         $datesMap = [
             'Born',
@@ -47,20 +48,34 @@ class Main extends BaseController
             'Founded'
         ];
         $months = "January|February|March|April|May|June|July|August|September|October|November|December";
-        $dateRegx = "/([\d]{4}[-][\d]{2}-[\d]{1,2})|(([\d]{1,2}[\s])($months)([\s][\d]{4}))/i";
+        echo $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})/i";
         // die("HALTING");
         $dom = HtmlDomParser::str_get_html($sideSummary);
 
         $table = $dom->find("table tr");
         $dates = [];
+
         foreach ($table as $row) {
             $th = $row->findOne('th');
             $td = $row->findOne('td');
 
-            if (in_array($th->textContent, $datesMap)) {
-                preg_match_all($dateRegx, $td->textContent, $extractedDates, PREG_PATTERN_ORDER);
-                if (!empty($extractedDates) && !empty($extractedDates[1]))
-                    $dates[$th->textContent] = date('Y-m-d', strtotime($extractedDates[0][0]));
+            if (in_array(trim($th->textContent), $datesMap)) {
+                // echo '<b>DATE </b>';
+                // echo "$th->textContent : $td->textContent" . PHP_EOL;
+                $td->textContent = preg_replace("/[^0-9A-z]/u", '-', $td->textContent,);
+
+                preg_match_all($dateRegx, $td->textContent, $extractedDates);
+
+                // echo "$th->textContent : $td->textContent" . PHP_EOL;
+                // print_r($extractedDates);
+
+                if (!empty($extractedDates) && !empty($extractedDates[1])) {
+                    $date =  date('Y-m-d', strtotime($extractedDates[0][0]));
+                    if ($date !== "1970-01-01")
+                        $dates[$th->textContent] = $date;
+                    else
+                        $dates[$th->textContent] = $extractedDates[0][0];
+                }
             }
             // print_r($th);
             // print_r($td);
