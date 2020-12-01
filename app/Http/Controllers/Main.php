@@ -47,8 +47,13 @@ class Main extends BaseController
             'Latest edition',
             'Founded'
         ];
+        $location = [
+            'Location',
+            'Coordinates',
+            'Coordinates',
+        ];
         $months = "January|February|March|April|May|June|July|August|September|October|November|December";
-        $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})/i";
+        $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})|(\d{4})/i";
         // die("HALTING");
         $dom = HtmlDomParser::str_get_html($sideSummary);
 
