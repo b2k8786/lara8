@@ -68,8 +68,8 @@ class Main extends BaseController
             $td = $row->findOne('td');
 
             if (in_array(trim($th->textContent), $datesMap)) {
-                echo '<b>DATE </b>' . PHP_EOL;
-                echo "$th->textContent : $td->textContent" . PHP_EOL;
+                // echo '<b>DATE </b>' . PHP_EOL;
+                // echo "$th->textContent : $td->textContent" . PHP_EOL;
                 $td->textContent = preg_replace("/[^0-9A-z]/u", '-', $td->textContent,);
 
                 preg_match_all($dateRegx, $td->textContent, $extractedDates);
