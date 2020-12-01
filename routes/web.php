@@ -21,4 +21,4 @@ Route::get('/', function () {
 
 Route::get('/live', [Stream::class, "sse"]);
 Route::get('/dash', [Stream::class, "main"]);
-Route::get('/wiki/${query}', [Main::class, "test"]);
+Route::get('/wiki/{query}', [Main::class, "test"]);
