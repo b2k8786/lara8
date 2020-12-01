@@ -9,6 +9,7 @@ class Main extends BaseController
 {
     function test($query)
     {
+        echo "<pre>";
         echo $query . PHP_EOL;
         $params = [
             'action' => 'parse',
@@ -29,7 +30,6 @@ class Main extends BaseController
         $err = curl_error($curl);
         curl_close($curl);
 
-        echo "<pre>";
         $text = json_decode($res, true);
         $sideSummary =  $text['parse']['text']['*'];
 
@@ -45,7 +45,10 @@ class Main extends BaseController
             'Release date',
             'First edition',
             'Latest edition',
-            'Founded'
+            'Founded',
+            'Designated',
+            'Construction',
+            'Completed'
         ];
         $location = [
             'Location',
@@ -54,7 +57,7 @@ class Main extends BaseController
         ];
         $months = "January|February|March|April|May|June|July|August|September|October|November|December";
         $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})|(\d{4})/i";
-        // die("HALTING");
+        // die("HALT !!!");
         $dom = HtmlDomParser::str_get_html($sideSummary);
 
         $table = $dom->find("table tr");
@@ -65,8 +68,8 @@ class Main extends BaseController
             $td = $row->findOne('td');
 
             if (in_array(trim($th->textContent), $datesMap)) {
-                // echo '<b>DATE </b>';
-                // echo "$th->textContent : $td->textContent" . PHP_EOL;
+                echo '<b>DATE </b>' . PHP_EOL;
+                echo "$th->textContent : $td->textContent" . PHP_EOL;
                 $td->textContent = preg_replace("/[^0-9A-z]/u", '-', $td->textContent,);
 
                 preg_match_all($dateRegx, $td->textContent, $extractedDates);
@@ -75,8 +78,10 @@ class Main extends BaseController
                 // print_r($extractedDates);
 
                 if (!empty($extractedDates) && !empty($extractedDates[1])) {
+
+                    preg_match("/[\-A-Z]/i", $extractedDates[0][0], $matches);
                     $date =  date('Y-m-d', strtotime($extractedDates[0][0]));
-                    if ($date !== "1970-01-01")
+                    if (count($matches) && $date !== "1970-01-01")
                         $dates[$th->textContent] = $date;
                     else
                         $dates[$th->textContent] = $extractedDates[0][0];
