@@ -48,7 +48,7 @@ class Main extends BaseController
             'Founded'
         ];
         $months = "January|February|March|April|May|June|July|August|September|October|November|December";
-        echo $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})/i";
+        $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})/i";
         // die("HALTING");
         $dom = HtmlDomParser::str_get_html($sideSummary);
 
