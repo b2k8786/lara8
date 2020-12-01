@@ -10,5 +10,6 @@
             "database": "main",
             "username": "postgres"
         }
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }
