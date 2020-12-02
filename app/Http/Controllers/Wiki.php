@@ -83,9 +83,14 @@ class Wiki extends BaseController
             }
             # parsing locations
             if (in_array(trim($th->textContent), $this->locationMap())) {
-                // $td->textContent = preg_replace("/[^0-9A-z]/u", ', ', $td->textContent,);
-                // preg_match_all($dateRegx, $td->textContent, $extractedDates);
-                $locations[$th->textContent] = $td->textContent;
+                // $td->textContent = preg_replace("/(&#\w+;)/i", ', ', $td->textContent);
+                if ($th->textContent == 'Coordinates') {
+                    $locations['Coordinates'] =   [
+                        "latitude" => $td->findOne('span.latitude')->textContent,
+                        "longitude" => $td->findOne('span.longitude')->textContent
+                    ];
+                } else
+                    $locations[$th->textContent] = $td->textContent;
             }
         }
 
