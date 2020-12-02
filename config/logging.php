@@ -3,14 +3,15 @@
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
-use Rollbar\Rollbar;
   
-Rollbar::init(array(
-    'environment' => 'production'
-));
-
 return [
 
+    'rollbar' => [
+        'driver' => 'monolog',
+        'handler' => \Rollbar\Laravel\MonologHandler::class,
+        'access_token' => env('ROLLBAR_TOKEN'),
+        'level' => 'debug',
+    ],
     /*
     |--------------------------------------------------------------------------
     | Default Log Channel
