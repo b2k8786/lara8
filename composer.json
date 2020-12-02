@@ -14,6 +14,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
+        "rollbar/rollbar-laravel": "^7.0",
         "voku/portable-utf8": "^5.4",
         "voku/simple_html_dom": "^4.7"
     },

@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '4874de4a101c6324e324479176eb90656cfacfa9',
+    'reference' => '7421873b25ce8f17a8b55c7928413ea1715645fb',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -446,7 +446,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '4874de4a101c6324e324479176eb90656cfacfa9',
+      'reference' => '7421873b25ce8f17a8b55c7928413ea1715645fb',
     ),
     'laravel/tinker' => 
     array (
@@ -807,6 +807,24 @@
       array (
         0 => '4.1.1',
       ),
+    ),
+    'rollbar/rollbar' => 
+    array (
+      'pretty_version' => 'v2.1.0',
+      'version' => '2.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'ff3db5739dd635740caed02ddad43e671b5a37e5',
+    ),
+    'rollbar/rollbar-laravel' => 
+    array (
+      'pretty_version' => 'v7.0.0',
+      'version' => '7.0.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '9ffed9026f3786538a64cf5fb7e28a1fbdd11b2d',
     ),
     'sebastian/cli-parser' => 
     array (
