@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Main;
+use App\Http\Controllers\Wiki;
 use App\Http\Controllers\Stream;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +21,4 @@ Route::get('/', function () {
 
 Route::get('/live', [Stream::class, "sse"]);
 Route::get('/dash', [Stream::class, "main"]);
-Route::get('/wiki/{query}', [Main::class, "test"]);
+Route::get('/wiki/{query}', [Wiki::class, "parseData"]);
