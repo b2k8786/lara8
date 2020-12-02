@@ -9,6 +9,7 @@ class Wiki extends BaseController
 {
     function parseData($query)
     {
+        throw new \Exception('Test exception');
         $query = ucwords($query);
         echo "Data for $query";
         $params = [
