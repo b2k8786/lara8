@@ -12,9 +12,8 @@ class Wiki extends BaseController
         $params = [
             'action' => 'parse',
             'format' => 'json',
-            'page' => $query, //'Mahatma Gandhi',
-            'prop' => 'text',
-            // 'section' => 'info'
+            'page' => $query,
+            'prop' => 'text'
         ];
 
         $curl = curl_init();
@@ -28,21 +27,20 @@ class Wiki extends BaseController
         $err = curl_error($curl);
         curl_close($curl);
 
+        if (!empty($err)) {
+            print_r($err);
+            exit;
+        }
+
         $text = json_decode($res, true);
         if (empty($text['parse'])) {
             print_r($text);
             exit("NO data");
         }
 
-        $sideSummary =  $text['parse']['text']['*'];
-
-        // print_r($text);
-
         $wikiBaseUrl = "https://en.wikipedia.org/";
 
-
-        // die("HALT !!!");
-
+        $sideSummary =  $text['parse']['text']['*'];
         $dom = HtmlDomParser::str_get_html($sideSummary);
         dd($this->parseFields($dom));
     }
@@ -56,9 +54,9 @@ class Wiki extends BaseController
     {
         $months = "January|February|March|April|May|June|July|August|September|October|November|December";
         $dateRegx = "/(\d{4}-\d{2}-\d{1,2})|(\d{1,2}\s($months)\s\d{4})|(\d{4}-\d{2,4})|(\d{4})/i";
-        
+
         $table = $dom->find("table tr");
-        $data=[];
+        $data = [];
         $dates = [];
         $locations = [];
 
@@ -81,6 +79,21 @@ class Wiki extends BaseController
                         $dates[$th->textContent] = $extractedDates[0][0];
                 }
             }
+            # parsing locations
+            if (in_array(trim($th->textContent), $this->dateMap())) {
+                $td->textContent = preg_replace("/[^0-9A-z]/u", '-', $td->textContent,);
+                preg_match_all($dateRegx, $td->textContent, $extractedDates);
+
+                if (!empty($extractedDates) && !empty($extractedDates[1])) {
+
+                    preg_match("/[\-A-Z]/i", $extractedDates[0][0], $matches);
+                    $date =  date('Y-m-d', strtotime($extractedDates[0][0]));
+                    if (count($matches) && $date !== "1970-01-01")
+                        $dates[$th->textContent] = $date;
+                    else
+                        $dates[$th->textContent] = $extractedDates[0][0];
+                }
+            }
         }
 
         $data['dates'] = $dates;
@@ -88,7 +101,11 @@ class Wiki extends BaseController
 
         return $data;
     }
-   
+
+    /**
+     *Posible labels for dates
+     *@return array
+     */
     function dateMap()
     {
         return [
@@ -106,12 +123,15 @@ class Wiki extends BaseController
             'Completed'
         ];
     }
+    /**
+     *Posible labels for locations
+     *@return array
+     */
     function locationMap()
     {
         return [
             'Location',
-            'Coordinates',
-            'Coordinates',
+            'Coordinates'
         ];
     }
 }
